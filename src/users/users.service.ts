@@ -45,13 +45,14 @@ export class UsersService {
         try {
             const user = await this.db.collection(this.COLLECTION).findOne({ username });
 
-            if (user) {
+            if (user && user.isActive) {
                 const userWithoutPassword: User = {
                     username: user.username,
                     id: user._id.toString(),
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
+                    isActive: !! user.isActive,
                     password: user.password
                 };
 

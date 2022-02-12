@@ -28,17 +28,7 @@ export class UsersController {
         try {
             const user = await this.userService.findByUsername(loginDTO.username);
 
-            if (!user) {
-                throw new UnauthorizedException('Invalid Username or Password !');
-            }
-
-            const verifyPassword = this.userService.verifyPassword(loginDTO.password, user.password);
-
-            if (!verifyPassword) {
-                throw new UnauthorizedException('Invalid Username or Password !');
-            }
-
-            const token = this.userService.generateToken(user);
+            const token = this.getJWTForValidUser(user, loginDTO.password);
 
             return {
                 success: true,
@@ -51,5 +41,23 @@ export class UsersController {
         } catch(e) {
             throw e;
         }
+    }
+
+    private getJWTForValidUser (user: User, password: string): string {
+        if (!user) {
+            throw new UnauthorizedException('Invalid Username or Password !');
+        }
+
+        const verifyPassword = this.userService.verifyPassword(password, user.password);
+
+        if (!verifyPassword) {
+            throw new UnauthorizedException('Invalid Username or Password !');
+        }
+
+        if (!user.isActive) {
+            throw new UnauthorizedException('User is not Active !');
+        }
+
+        return this.userService.generateToken(user);
     }
 }
