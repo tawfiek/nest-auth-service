@@ -1,25 +1,37 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { User } from 'src/@types/user.interface';
 import * as bcrypt from 'bcrypt';
 import { Db } from 'mongodb';
 import { AddUserDTO } from 'src/DTOs/users';
 import * as  jwt from 'jsonwebtoken';
+import * as uuid from 'uuid';
 
 @Injectable()
 export class UsersService {
     COLLECTION = 'users';
+    OTP_EXPIRATION_TIME =  1 ;
 
     constructor (
         @Inject('DATABASE_CONNECTION')
         private db: Db
-    ) { }
+    ) {
+        this.db.collection(this.COLLECTION).createIndex({ username: 1 }, { unique: true });
+        this.db.collection(this.COLLECTION).createIndex({ email: 1 }, { unique: true });
+     }
 
     public async create(user: AddUserDTO): Promise<User> {
         try {
-            const userCopy = { ...user };
+            const userCopy: any = { ...user };
             userCopy.password = this.hashPassword(userCopy.password);
+            userCopy.isActive = false;
+            userCopy.activationUUID = this.generateUUID();
 
-            // TODO: add check to ensure that user is not already in the database.
+            const canAddThisUser = await this.canAddUser(user);
+
+            if (!canAddThisUser) {
+                throw new BadRequestException('User already exists');
+            }
+
             const result = await this.db.collection(this.COLLECTION).insertOne(userCopy);
 
             if (result.acknowledged) {
@@ -33,6 +45,7 @@ export class UsersService {
                 firstName: userAdded.firstName,
                 lastName: userAdded.lastName,
                 email: userAdded.email,
+                isActive: !! userAdded.isActive,
             };
 
             return userAddedWithoutPassword;
@@ -66,6 +79,36 @@ export class UsersService {
     }
 
 
+    public async findByActivationUUID (activationUUID: string): Promise<User> {
+        try {
+            const user = await this.db.collection(this.COLLECTION).findOne({ activationUUID });
+
+            if (user) {
+                const userWithoutPassword: User = {
+                    username: user.username,
+                    id: user._id.toString(),
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    isActive: !! user.isActive,
+                    password: user.password
+                };
+
+                return userWithoutPassword;
+            }
+
+            return null;
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async activateUser (user: User): Promise<boolean> {
+        const result = await this.db.collection(this.COLLECTION).updateOne({ _id: user.id }, { $set: { isActive: true } });
+
+        return result.acknowledged;
+    }
+
     public verifyPassword(password: string, hashedPassword: string): boolean {
         return bcrypt.compareSync(password, hashedPassword);
     }
@@ -93,4 +136,16 @@ export class UsersService {
 
         return bcrypt.hashSync(password, salt);
     }
+
+    private generateUUID (): string {
+        return uuid.v4();
+    }
+
+    private async canAddUser (user: AddUserDTO): Promise<boolean> {
+        const userWithUserName =  await this.db.collection(this.COLLECTION).findOne({ username: user.username });
+        const userWithEmail = await this.db.collection(this.COLLECTION).findOne({ email: user.email });
+
+        return !userWithUserName && !userWithEmail;
+    }
+
 }

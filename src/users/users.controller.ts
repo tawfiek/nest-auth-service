@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Next, Post, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Next, Param, Post, UnauthorizedException} from '@nestjs/common';
 import { OperationStatus, OperationStatusWithData } from 'src/@types/opertation-status.interface';
 import { User } from 'src/@types/user.interface';
 import { AddUserDTO, LoginDTO } from 'src/DTOs/users';
@@ -11,6 +11,7 @@ export class UsersController {
     @Post('/create')
     async create(@Body() addUserDTO: AddUserDTO): Promise<OperationStatusWithData<User>> {
         try {
+
             const addingResult  = await this.userService.create(addUserDTO);
 
             return {
@@ -39,6 +40,27 @@ export class UsersController {
             }
 
         } catch(e) {
+            throw e;
+        }
+    }
+
+    @Get('/activate/:uuid')
+    async activate(@Param() params: {uuid: string}): Promise<String> {
+        try {
+            const { uuid } = params;
+
+
+            const user = await this.userService.findByActivationUUID(uuid);
+
+            if (!user) {
+                throw new BadRequestException('Invalid Activation Link!');
+            }
+
+            const isDone = await this.userService.activateUser(user);
+
+            // TODO: Make this endpoint renders an HTML page instated of just returning a string
+            return isDone ? 'User activated !' : 'Link has been expired !';
+        } catch (e) {
             throw e;
         }
     }
