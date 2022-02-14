@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Get, Next, Param, Post, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Inject, Next, Param, Post, UnauthorizedException} from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { OperationStatus, OperationStatusWithData } from 'src/@types/opertation-status.interface';
 import { User } from 'src/@types/user.interface';
 import { AddUserDTO, LoginDTO } from 'src/DTOs/users';
@@ -6,13 +7,18 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly userService: UsersService) {}
+    constructor(
+        private readonly userService: UsersService,
+        @Inject('KAFKA_MODULE') private readonly kafkaClient: ClientKafka
+    ) {}
 
     @Post('/create')
     async create(@Body() addUserDTO: AddUserDTO): Promise<OperationStatusWithData<User>> {
         try {
 
             const addingResult  = await this.userService.create(addUserDTO);
+
+            this.kafkaClient.emit('users.create', addingResult);
 
             return {
                 success: true,
@@ -57,6 +63,8 @@ export class UsersController {
             }
 
             const isDone = await this.userService.activateUser(user);
+
+            this.kafkaClient.send('users.activated', user);
 
             // TODO: Make this endpoint renders an HTML page instated of just returning a string
             return isDone ? 'User activated !' : 'Link has been expired !';

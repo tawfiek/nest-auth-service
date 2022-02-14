@@ -45,6 +45,7 @@ export class UsersService {
                 firstName: userAdded.firstName,
                 lastName: userAdded.lastName,
                 email: userAdded.email,
+                activationUUID: userCopy.activationUUID,
                 isActive: !! userAdded.isActive,
             };
 
@@ -144,6 +145,8 @@ export class UsersService {
     private async canAddUser (user: AddUserDTO): Promise<boolean> {
         const userWithUserName =  await this.db.collection(this.COLLECTION).findOne({ username: user.username });
         const userWithEmail = await this.db.collection(this.COLLECTION).findOne({ email: user.email });
+
+        console.log('#DEBUG ', userWithEmail, user.username);
 
         return !userWithUserName && !userWithEmail;
     }
