@@ -86,6 +86,7 @@ export class UsersController {
     }
   }
 
+  // Verify user password and then return a JWT for this user.
   private getJWTForValidUser(user: User, password: string): string {
     if (!user) {
       throw new UnauthorizedException('Invalid Username or Password !');

@@ -23,6 +23,7 @@ export class UsersService {
       .createIndex({ email: 1 }, { unique: true });
   }
 
+  // Create new user after verifying it and hashing the password.
   public async create(user: AddUserDTO): Promise<User> {
     try {
       const userCopy: any = { ...user };
@@ -63,6 +64,7 @@ export class UsersService {
     }
   }
 
+  // Use mongo client to find a user in user's collection buy user name.
   public async findByUsername(username: string): Promise<User> {
     try {
       const user = await this.db
@@ -89,6 +91,7 @@ export class UsersService {
     }
   }
 
+  // Use mongo client to find a user in user's collection buy activation UUID.
   public async findByActivationUUID(activationUUID: string): Promise<User> {
     try {
       const user = await this.db
@@ -115,6 +118,7 @@ export class UsersService {
     }
   }
 
+  // Update isActive property to mark user as active.
   public async activateUser(user: User): Promise<boolean> {
     const result = await this.db
       .collection(this.COLLECTION)
@@ -123,10 +127,12 @@ export class UsersService {
     return result.acknowledged;
   }
 
+  // Use bcrypt to compare the plain text password with a hashed one.
   public verifyPassword(password: string, hashedPassword: string): boolean {
     return bcrypt.compareSync(password, hashedPassword);
   }
 
+  // Generate JWT with the user data as a payload.
   public generateToken(user: User): string {
     const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
@@ -139,6 +145,7 @@ export class UsersService {
     return token;
   }
 
+  // Use bcrypt to hash a plain text password after generating salt.
   private hashPassword(password: string): string {
     const BCRYPT_ROUNDS = +process.env.BCRYPT_ROUNDS;
 
@@ -151,10 +158,13 @@ export class UsersService {
     return bcrypt.hashSync(password, salt);
   }
 
+  // UUID generation wrapper.
   private generateUUID(): string {
     return uuid.v4();
   }
 
+  // Check if the user can be added,
+  // By checking if there are any other user used the same username or email before.
   private async canAddUser(user: AddUserDTO): Promise<boolean> {
     const userWithUserName = await this.db
       .collection(this.COLLECTION)
