@@ -122,7 +122,7 @@ export class UsersService {
   public async activateUser(user: User): Promise<boolean> {
     const result = await this.db
       .collection(this.COLLECTION)
-      .updateOne({ _id: user.id }, { $set: { isActive: true } });
+      .updateOne({ activationUUID: user.activationUUID }, { $set: { isActive: true } });
 
     return result.acknowledged;
   }

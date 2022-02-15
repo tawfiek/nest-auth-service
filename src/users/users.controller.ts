@@ -77,10 +77,12 @@ export class UsersController {
 
       const isDone = await this.userService.activateUser(user);
 
-      this.kafkaClient.send('users.activated', user);
-
-      // TODO: Make this endpoint renders an HTML page instated of just returning a string
-      return isDone ? 'User activated !' : 'Link has been expired !';
+      if (isDone){
+        this.kafkaClient.emit('users.activated', user);
+        return 'User activated !';
+      } else {
+        return 'Invalid Link !'
+      }
     } catch (e) {
       throw e;
     }
