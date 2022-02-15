@@ -163,8 +163,6 @@ export class UsersService {
       .collection(this.COLLECTION)
       .findOne({ email: user.email });
 
-    console.log('#DEBUG ', userWithEmail, user.username);
-
     return !userWithUserName && !userWithEmail;
   }
 }

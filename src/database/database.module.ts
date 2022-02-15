@@ -9,8 +9,6 @@ import { MongoClient, Db } from 'mongodb';
         try {
           const { MONGODB_URL, MONGODB_DATABASE } = process.env;
 
-          console.log('#DEBUG MONGODB_URL', MONGODB_URL);
-
           const client = await MongoClient.connect(MONGODB_URL);
 
           return client.db(MONGODB_DATABASE);
