@@ -1,10 +1,10 @@
 export interface User {
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password?: string
-    isActive?: boolean;
-    activationUUID?: string;
+  id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  isActive?: boolean;
+  activationUUID?: string;
 }

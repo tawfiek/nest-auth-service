@@ -9,7 +9,7 @@ import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
-     ClientsModule.register([
+    ClientsModule.register([
       {
         name: 'KAFKA_MODULE',
         transport: Transport.KAFKA,
@@ -24,16 +24,10 @@ import { UsersService } from './users/users.service';
         },
       },
     ]),
-    ConfigModule.forRoot({envFilePath: '.env'}),
-    DatabaseModule
+    ConfigModule.forRoot({ envFilePath: '.env' }),
+    DatabaseModule,
   ],
-  controllers: [
-    AppController,
-    UsersController
-  ],
-  providers: [
-    AppService,
-    UsersService,
-  ],
+  controllers: [AppController, UsersController],
+  providers: [AppService, UsersService],
 })
 export class AppModule {}
