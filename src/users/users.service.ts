@@ -107,22 +107,22 @@ export class UsersService {
       throw e;
     }
 
-    function parseUser (user): User {
-        const parsedUser: User = {
-            username: user.username,
-            id: user._id.toString(),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            isActive: !!user.isActive,
-            password: user.password,
-        };
+    function parseUser(user): User {
+      const parsedUser: User = {
+        username: user.username,
+        id: user._id.toString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isActive: !!user.isActive,
+        password: user.password,
+      };
 
-        if (!user.isActive) {
-            parsedUser.activationUUID = user.activationUUID
-        }
+      if (!user.isActive) {
+        parsedUser.activationUUID = user.activationUUID;
+      }
 
-        return parsedUser;
+      return parsedUser;
     }
   }
 
@@ -130,10 +130,11 @@ export class UsersService {
   public async activateUser(user: User): Promise<boolean> {
     const result = await this.db
       .collection(this.COLLECTION)
-      .updateOne({ activationUUID: user.activationUUID }, { $set: { isActive: true } });
+      .updateOne(
+        { activationUUID: user.activationUUID },
+        { $set: { isActive: true } },
+      );
 
-    console.log('#DEBUG user', user);
-    
     return result.acknowledged;
   }
 

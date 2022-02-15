@@ -77,11 +77,11 @@ export class UsersController {
 
       const isDone = await this.userService.activateUser(user);
 
-      if (isDone){
+      if (isDone) {
         this.kafkaClient.emit('users.activated', user);
         return 'User activated !';
       } else {
-        return 'Invalid Link !'
+        return 'Invalid Link !';
       }
     } catch (e) {
       throw e;
