@@ -99,22 +99,30 @@ export class UsersService {
         .findOne({ activationUUID });
 
       if (user) {
-        const userWithoutPassword: User = {
-          username: user.username,
-          id: user._id.toString(),
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          isActive: !!user.isActive,
-          password: user.password,
-        };
-
-        return userWithoutPassword;
+        return parseUser(user);
       }
 
       return null;
     } catch (e) {
       throw e;
+    }
+
+    function parseUser (user): User {
+        const parsedUser: User = {
+            username: user.username,
+            id: user._id.toString(),
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isActive: !!user.isActive,
+            password: user.password,
+        };
+
+        if (!user.isActive) {
+            parsedUser.activationUUID = user.activationUUID
+        }
+
+        return parsedUser;
     }
   }
 
@@ -124,6 +132,8 @@ export class UsersService {
       .collection(this.COLLECTION)
       .updateOne({ activationUUID: user.activationUUID }, { $set: { isActive: true } });
 
+    console.log('#DEBUG user', user);
+    
     return result.acknowledged;
   }
 
