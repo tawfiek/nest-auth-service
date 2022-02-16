@@ -1,73 +1,104 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
+# Authentication service
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+> This is an auth service application built as an assessment task for Dev Development company.
+As a part of hiring process for a Sr.Software Engineer in Backend position at the same company.
 
-## Installation
+In this task I used minimal packages and libraries, to show that we have the basic understanding of the concepts of authentication and MQTT connections.
+## Functionality
 
-```bash
-$ npm install
+This is a basic authentication service has two main functionalities [Sign-up and login using email and username] using email verification style.
+
+After registration this service produce a message to a mailer service through Kafka as an MQTT broker to send a verification email to the user contain a link to activate the user's account.
+
+This link in the email should hit the activation end point in this service to activate the account and then send another message to the mailer service on another topic to send another welcoming email.
+
+Now let's dive into the technical stuff.
+
+
+## Dependencies
+This application depends on mongodb as a datastore and Kafka as an MQTT broker, you can get these dependencies up and running using docker-comps, which is configured in the `docker-compose.yml`  file in the root of the application directory.
+
+All the environment variables are needed should be added to the `.env` file in the root of the application directory, I added `.example.env` file which contains the variable that I used in my machine, I know it's not a good practice to do so in the real applications but I did this here to make it easy for the reviewer to quickly run the application to review.
+
+The variables in `.example.env` file should works fine if you gonna use the docker compose file to run the dependencies and you can just copy that using the following command.
+
+
+``` bash
+  cp .example.env .env
 ```
 
+
+> All  services are exposed to the localhost and you can access the DB using whatever DB client you preferrer.
+
+> You can also access Kafka-Ui on port `8080`.
+
+To install application's dependencies run
+
+``` bash
+npm install
+```
+
+
+Now let's find out how we can run the application.
 ## Running the app
+
+To run the application directly on your machine.
+
+This will make the application runs on `http://localhost:3000`
+
+Or `SERVER_PORT` this environment variable that we can change the default port of the application.
 
 ```bash
 # development
+# watch mode
 $ npm run start
 
-# watch mode
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+Also I added docker file to run the application on `node:alpine` image, in multi stage docker file one for dev and one for production.
 
-```bash
-# unit tests
-$ npm run test
+## APIs
 
-# e2e tests
-$ npm run test:e2e
+I added a post man collection for the APIs with example in the `docs/` directory that holds all the APIs that generated for this service.
 
-# test coverage
-$ npm run test:cov
+Simply we have these four APIs here
+
+### [GET] /ping  
+
+This API just a health check it should return a 200 response if the application is up and running
+
+### [POST] /users/create
+
+This API for creating a new user it takes the following body as json payload to sign up a new user.
+
+``` json
+{
+    "username": "tawfiek123",
+    "firstName": "tawfiek",
+    "lastName": "Khalaf",
+    "email": "tawfiek123.108@gmail.com",
+    "password": "password"
+}
 ```
 
-## Support
+### [POST] /users/login
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Login API this one takes the following json payload to authenticate the user into his account.
 
-## Stay in touch
+``` json
+{
+  "username": "tawfiek",
+  "password": "passwords"
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### [PUT] /users/activate/:uuid
 
-## License
+This API that should be sent by the user to activate his account, by clicking the link in his email and it takes some UUID to Identify this user which should be send to the user on his email using the mailer service.
 
-Nest is [MIT licensed](LICENSE).
+> For more information please checkout `/docs/api.json` file in the application directory.
