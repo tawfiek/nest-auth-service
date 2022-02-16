@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "2ecb562c-8833-49f6-ae69-f0978d7bbd58",
+		"name": "Link Auth Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ping [Healthcheck]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Ping [Healthcheck]",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "33"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"21-yxhdLU8iqhcSP9NMYaC4DOuZtmQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Feb 2022 11:57:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"pong\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Creat new User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"tawfiek\",\n    \"firstName\": \"tawfiek\",\n    \"lastName\": \"Khalaf\",\n    \"email\": \"tawfiek.108@gmail.com\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Creat new User [ User already exsit ]",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tawfiek\",\n    \"firstName\": \"tawfiek\",\n    \"lastName\": \"Khalaf\",\n    \"email\": \"tawfiek.108@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"create"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "72"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"48-7ZmePETeNNHktyBuzgpR8seBGdo\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Feb 2022 12:44:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 400,\n    \"message\": \"User already exists\",\n    \"error\": \"Bad Request\"\n}"
+				},
+				{
+					"name": "Creat new User [ Success ]",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tawfiek123\",\n    \"firstName\": \"tawfiek\",\n    \"lastName\": \"Khalaf\",\n    \"email\": \"tawfiek123.108@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"create"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "258"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"102-+gUlMgVJIxDQ+sMNIZXH7VVFPJM\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Feb 2022 12:44:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"User created !\",\n    \"data\": {\n        \"username\": \"tawfiek123\",\n        \"id\": \"620cf1cabaca6b8b33d7ab03\",\n        \"firstName\": \"tawfiek\",\n        \"lastName\": \"Khalaf\",\n        \"email\": \"tawfiek123.108@gmail.com\",\n        \"activationUUID\": \"9a753994-7d6c-4cb2-a7d8-d03cfc798337\",\n        \"isActive\": false\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"tawfiek\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login [Success]",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tawfiek\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "460"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1cc-B0Cxt7X/8R1b/HSWm3/3ZHNbQ0g\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 15 Feb 2022 21:25:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"User logged in !\",\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhd2ZpZWsiLCJpZCI6IjYyMGMxNTk4ZDA2NzVmYTE0YzMzMDQ0MiIsImZpcnN0TmFtZSI6InRhd2ZpZWsiLCJsYXN0TmFtZSI6IktoYWxhZiIsImVtYWlsIjoidGF3Zmllay4xMDhAZ21haWwuY29tIiwiaXNBY3RpdmUiOnRydWUsInBhc3N3b3JkIjoiJDJiJDA1JERKRWRxdjVqRnZoN2JIekdYN0ZDMS5vUWozSnUySGp1bk90LzRGZkRwM0w1dVR1STVibzBDIiwiaWF0IjoxNjQ0OTYwMzMyfQ.hQbjmPhT0DsGAO3V2T0VDG7gWovx-TPYb7jmpJwT_2s\"\n    }\n}"
+				},
+				{
+					"name": "Login [ Invalid ]",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tawfiek\",\n    \"password\": \"passwords\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "84"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"54-6HTle28ULuke31O9PGwM+hsMSSw\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Feb 2022 12:45:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 401,\n    \"message\": \"Invalid Username or Password !\",\n    \"error\": \"Unauthorized\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Activate user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/activate/:uuid",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"activate",
+						":uuid"
+					],
+					"variable": [
+						{
+							"key": "uuid",
+							"value": "adf8cc6f-9fa9-454b-a6e6-678184c4feda"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Activate user [DONE]",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/activate/:uuid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"activate",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "adf8cc6f-9fa9-454b-a6e6-678184c4feda"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"10-W/rBPOhDCwZEhqwFNPZbI7+Po+s\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 15 Feb 2022 21:25:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "User activated !"
+				},
+				{
+					"name": "Activate user [Ivalid]",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/activate/:uuid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"activate",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "adf8cc6f-9fa9-454b-a6e6-678184c4fedasdf"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "77"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4d-3rP4dml8Py0aFiqciM8l6NWQo2w\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Feb 2022 12:52:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 400,\n    \"message\": \"Invalid Activation Link!\",\n    \"error\": \"Bad Request\"\n}"
+				}
+			]
+		}
+	]
+}
