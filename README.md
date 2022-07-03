@@ -1,9 +1,6 @@
 # Authentication service
 ## Description
 
-> This is an auth service application built as an assessment task for Dev Development company.
-As a part of hiring process for a Sr.Software Engineer in Backend position at the same company.
-
 In this task I used minimal packages and libraries, to show that we have the basic understanding of the concepts of authentication and MQTT connections.
 ## Functionality
 
