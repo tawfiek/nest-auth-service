@@ -98,4 +98,6 @@ Login API this one takes the following json payload to authenticate the user int
 
 This API that should be sent by the user to activate his account, by clicking the link in his email and it takes some UUID to Identify this user which should be send to the user on his email using the mailer service.
 
+The mailer service repo can be found [here](https://github.com/tawfiek/nest-email-service).
+
 > For more information please checkout `/docs/api.json` file in the application directory.
